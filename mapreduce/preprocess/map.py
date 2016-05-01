@@ -24,8 +24,9 @@ for line in sys.stdin:
         rate_ID = 0
         
         values.append(items[0])
-        values.append(str((date_end - date_obj).total_seconds()/60.0))
-
+        td = date_end - date_obj
+        total_second = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
+        values.append(str(total_second/60.0))
         if len(items) == 23: #green
             rate_ID = int(items[4])
             rowtype = 1

@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import sys
+import traceback
 from datetime import datetime
 	
 #input comes from STDIN (stream data that goes to the program)
@@ -15,32 +16,31 @@ for line in sys.stdin:
             if items[0] == "VendorID":
                 continue
 
-        date_obj = datetime.strptime(item[1], '%Y-%m-%d %H:%M:%s')
-        keys.append(date_obj.year)
-        keys.append(date_obj.month)
-        keys.append(date_obj.day)
-        date_end = datetime.strptime(item[2], '%Y-%m-%d %H:%M:%s')
+        date_obj = datetime.strptime(items[1], '%Y-%m-%d %H:%M:%S')
+        keys.append(str(date_obj.year))
+        keys.append(str(date_obj.month))
+        keys.append(str(date_obj.day))
+        date_end = datetime.strptime(items[2], '%Y-%m-%d %H:%M:%S')
         rate_ID = 0
         
         values.append(items[0])
-        values.append(date_end - date_obj)
+        values.append(str((date_end - date_obj).total_seconds()/60.0))
 
-        if len(items) == 21: #green
-            rate_ID = int(item[4])
+        if len(items) == 23: #green
+            rate_ID = int(items[4])
             rowtype = 1
             values.append(items[3])
             values.extend(items[5:])
         elif len(items) == 19: #yellow
-            rate_ID = int(item[7])
+            rate_ID = int(items[7])
             rowtype = 2
             values.extend(items[3:7])
-            values.extend(items[3:8])
-        print "%s\t%d,%d,%s" %(",".join(keys), rowtype, rate_ID, ",".join(values))  
+            values.extend(items[8:])
+        print "%s\t%d,%d,%s" % (",".join(keys), rowtype, rate_ID, ",".join(values))
     except:
-        pass
-
-# output        
+        traceback.print_exc()
+# output
 # green
-# year,month,day    1,rateID, triptime, sfflag, plon, plat, dlon, dlat, passcnt, tripdistance, fareAmount, extra, mtaTax, tipAmount, EhailFee, ImproveSurcharge, totalAmount, PaymentType, TripType
+# year,month,day    1,rateID, vendorID, triptime, sfflag, plon, plat, dlon, dlat, passcnt, tripdistance, fareAmount, extra, mtaTax, tipAmount, tollAmount, EhailFee, ImproveSurcharge, totalAmount, PaymentType, TripType
 # yellow
-# year,month,day    2,rateID, triptime, passcnt, tripdistance, plon, plat, sfflag, dlon, dlat, PaymentType, fareAmount, extra, mtaTax, tipAmount, tollsAmount, ImproveSurcharge, totalAmount
+# year,month,day    2,rateID, vendorID, triptime, passcnt, tripdistance, plon, plat, sfflag, dlon, dlat, PaymentType, fareAmount, extra, mtaTax, tipAmount, tollsAmount, ImproveSurcharge, totalAmount

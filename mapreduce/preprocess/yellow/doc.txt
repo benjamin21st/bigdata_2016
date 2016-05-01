@@ -21,11 +21,12 @@ rateID,
 10  extra,
 11  mtaTax,
 12  tipAmount,
-13  EhailFee,
-14  ImproveSurcharge,
-15  totalAmount,
-16  PaymentType,
-17  TripType
+13  tollsAmount,
+14  EhailFee,
+15  ImproveSurcharge,
+16  totalAmount,
+17  PaymentType,
+18  TripType
 
 # yellow
 key:

@@ -24,6 +24,9 @@ input:
 '''
 reduce:
 key
+year,
+month,
+day
 0   0 or 1: green or yellow
 1   ratetype
 value

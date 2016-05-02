@@ -1,0 +1,81 @@
+
+'''
+input:
+# green
+key:
+    year,month,day    
+values:
+1,
+rateID,
+
+0   vendorID 
+1   triptime
+2   sfflag,
+3   plon,
+4   plat,
+5   dlon,
+6   dlat,
+7   passcnt,
+8   tripdistance,
+9   fareAmount,
+10  extra,
+11  mtaTax,
+12  tipAmount,
+13  tollsAmount,
+14  EhailFee,
+15  ImproveSurcharge,
+16  totalAmount,
+17  PaymentType,
+18  TripType
+
+# yellow
+key:
+    year,month,day 
+values:     
+2,
+rateID,
+
+0   vendorID
+1   triptime
+2   passcnt,
+3   tripdistance,
+4   plon,
+5   plat,
+6   sfflag,
+7   dlon,
+8   dlat,
+9   PaymentType,
+10  fareAmount,
+11  extra,
+12  mtaTax,
+13  tipAmount,
+14  tollsAmount,
+15  ImproveSurcharge,
+16  totalAmount
+
+reduce:
+key
+0   #triptime
+1   #passenger count
+2   #trip distance
+3   #Store_and_fwd_Y
+4   #Store_and_fwd_N
+5   #fare amount
+6   #extra
+7   #mta tax
+8   #tip amount
+9   #ehail fee
+10  #improvement surcharge
+11  #total amount
+12  #payment 1
+13  #payment 2
+14  #payment 3
+15  #payment 4
+16  #payment 5
+17  #payment 6
+18  #trip type 0
+19  #trip type 1
+20  #trip type 2
+21  #tollsAmount
+22  #record count
+'''

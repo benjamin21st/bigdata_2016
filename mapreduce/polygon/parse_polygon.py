@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import shapefile
 
-sf = shapefile.Reader('../data/ZillowNeighborhoods-NY')
+sf = shapefile.Reader('../../data/ZillowNeighborhoods-NY')
 
 
 records = sf.records()

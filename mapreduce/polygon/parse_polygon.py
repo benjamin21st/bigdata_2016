@@ -130,7 +130,6 @@ def main(argv):
             if len(items) > 0:
                 if items[0] == "VendorID":
                     continue
-            print len(items)
             date_obj = datetime.strptime(items[1], '%Y-%m-%d %H:%M:%S')
             keys.append(str(date_obj.year))
             keys.append(str(date_obj.month))

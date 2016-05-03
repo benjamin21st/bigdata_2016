@@ -40,7 +40,7 @@ for line in sys.stdin:
         td = date_end - date_obj
         total_second = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
         values.append(str(total_second/60.0))
-        if len(items) == 23: #green
+        if len(items) == 23 or len(items) == 21: #green #21 for after 7
             rate_ID = int(items[4])
             rowtype = 1
             plon = float(items[5])

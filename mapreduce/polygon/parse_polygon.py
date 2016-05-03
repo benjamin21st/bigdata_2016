@@ -130,7 +130,7 @@ def main(argv):
             if len(items) > 0:
                 if items[0] == "VendorID":
                     continue
-
+            print len(items)
             date_obj = datetime.strptime(items[1], '%Y-%m-%d %H:%M:%S')
             keys.append(str(date_obj.year))
             keys.append(str(date_obj.month))
@@ -142,7 +142,7 @@ def main(argv):
             td = date_end - date_obj
             total_second = (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10**6) / 10**6
             values.append(str(total_second/60.0))
-            if len(items) == 23: #green
+            if len(items) == 23 or len(items) == 21: #green #21 for after 7
                 rate_ID = int(items[4])
                 rowtype = 1
                 plon = float(items[5])

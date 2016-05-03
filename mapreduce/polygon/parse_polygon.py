@@ -74,7 +74,10 @@ def find_boroughs(boxes, points, lon, lat):
         for idx in idxs:
             if Polygons[idx].contains(pt):
                 newidx.append(idx)
-        return newidx
+        if len(newidx) > 0:
+            return newidx
+        else:
+            return idxs
     else:
         return idxs
 

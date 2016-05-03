@@ -5,3 +5,5 @@ local_config.py
 migrations
 *_log.txt
 *.csv
+
+data/*_poly.txt

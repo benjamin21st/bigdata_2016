@@ -16,7 +16,7 @@ for index, record in enumerate(records):
         join_data = {
             '_id_': idx,
             'name': record,
-            'gps': shapes[index].bbox #shapes[index].points
+            'gps': shapes[index].points #shapes[index].points
         }
         boxes.append(shapes[index].bbox)
         print join_data

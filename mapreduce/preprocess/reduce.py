@@ -87,7 +87,7 @@ for line in sys.stdin:
                 green[ratetype][key][12] += myfloat(value[15]) #improvement surcharge
                 green[ratetype][key][13] += myfloat(value[16]) #total amount
                 payoffset = int(value[17])
-                tripoffset = int(value[18 ])
+                tripoffset = int(value[18])
                 green[ratetype][key][13+payoffset] += 1
                 '''
                 green[ratetype][key][12] += myfloat() #payment 1

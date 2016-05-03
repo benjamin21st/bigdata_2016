@@ -30,17 +30,13 @@ for line in sys.stdin:
         if len(items) == 23 or len(items) == 21: #green #21 for after 7
             rate_ID = int(items[4])
             rowtype = 1
-            plon = float(items[5])
-            plat = float(items[6])
-            dlon = float(items[7])
-            dlat = float(items[8])
+            values.append(items[3])
+            values.extend(items[5:])
         elif len(items) == 19: #yellow
             rate_ID = int(items[7])
             rowtype = 2
-            plon = float(items[5])
-            plat = float(items[6])
-            dlon = float(items[9])
-            dlat = float(items[10])
+            values.extend(items[3:7])
+            values.extend(items[8:])
         print "%s\t%d,%d,%s" % (",".join(keys), rowtype, rate_ID, ",".join(values))
     except:
         traceback.print_exc()

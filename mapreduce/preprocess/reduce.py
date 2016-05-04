@@ -238,8 +238,8 @@ for i in range(1, 7):
     #print green[i]
     for tkey in green[i].iterkeys():
         #print green[i][tkey]
-        print "%s,1,%d \t%s" %(tkey, i, " ".join(map(str, green[i][tkey])))
+        print "%s,1,%d\t%s" %(tkey, i, ",".join(map(str, green[i][tkey])))
         
 for i in range(1, 7):
     for tkey in yellow[i].iterkeys():
-        print "%s,2,%d \t%s" %(tkey, i, " ".join(map(str, yellow[i][tkey])))
+        print "%s,2,%d\t%s" %(tkey, i, ",".join(map(str, yellow[i][tkey])))

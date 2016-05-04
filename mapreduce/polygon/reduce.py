@@ -22,7 +22,7 @@ def findIdx(value):
     if "_" in value:
         idxs = value.split('_')
         for idx in idxs:
-            pos = (int) idx
+            pos = (int)idx
             if pos > -1:
                 ret.append(pos)
     else:

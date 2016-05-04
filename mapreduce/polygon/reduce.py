@@ -3,8 +3,8 @@
 import sys
 import traceback
 
-yellow = [dict() for i in range(7)]
-green = [dict() for i in range(7)]
+yellow = [dict() for i in range(7)] * 2
+green = [dict() for i in range(7)] * 2
 
 rowcnt = 129
 
@@ -41,41 +41,41 @@ for line in sys.stdin:
         value_items = values.split(',')
         ratetype = int(ratetype)
         #print value
-        for value in value_items:
+        for i, value in enumerate(value_items):
             if rowtype == '1': #green
-                if key in green[ratetype]:
+                if key in green[i][ratetype]:
                     idxs = findIdx(value)
                     for idx in idxs:
-                        green[ratetype][key][idx] += 1
+                        green[i][ratetype][key][idx] += 1
                 else:
                     row = [0 for i in range(rowcnt)]
-                    green[ratetype][key] = row
+                    green[i][ratetype][key] = row
                     idxs = findIdx(value)
                     for idx in idxs:
-                        green[ratetype][key][idx] += 1
+                        green[i][ratetype][key][idx] += 1
             elif rowtype == '2': #yellow
-                if key in yellow[ratetype]:
+                if key in yellow[i][ratetype]:
                     idxs = findIdx(value)
                     for idx in idxs:
-                        yellow[ratetype][key][idx] += 1
+                        yellow[i][ratetype][key][idx] += 1
                 else:
                     row = [0 for i in range(rowcnt)]
-                    yellow[ratetype][key] = row
+                    yellow[i][ratetype][key] = row
                     idxs = findIdx(value)
                     for idx in idxs:
-                        yellow[ratetype][key][idx] += 1
+                        yellow[i][ratetype][key][idx] += 1
     except:
         traceback.print_exc()
-                
-for i in range(1, 7):
-    #print green[i]
-    for tkey in green[i].iterkeys():
-        #print green[i][tkey]
-        print "%s,1,%d\t%s" %(tkey, i, ",".join(map(str, green[i][tkey])))
-        
-for i in range(1, 7):
-    for tkey in yellow[i].iterkeys():
-        print "%s,2,%d\t%s" %(tkey, i, ",".join(map(str, yellow[i][tkey])))
+
+for j,t in enumerate(green):
+    for i in range(1, 7):
+        for tkey in green[j][i].iterkeys():
+            print "%s,1,%d,%d\t%s" %(tkey, i, j, ",".join(map(str, green[j][i][tkey])))
+
+for j,t in enumerate(yellow):
+    for i in range(1, 7):
+        for tkey in yellow[j][i].iterkeys():
+            print "%s,2,%d,%d\t%s" %(tkey, i, j, ",".join(map(str, yellow[j][i][tkey])))
         
 #output
 #district, pick_up/dropoff, cartype, ratetype, times, date

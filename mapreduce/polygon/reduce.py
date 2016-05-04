@@ -3,8 +3,8 @@
 import sys
 import traceback
 
-yellow = [dict() for i in range(7)] * 2
-green = [dict() for i in range(7)] * 2
+yellow = [[dict() for i in range(7)] for i in range(2)]
+green = [[dict() for i in range(7)] for i in range(2)]
 
 rowcnt = 129
 
@@ -41,29 +41,29 @@ for line in sys.stdin:
         value_items = values.split(',')
         ratetype = int(ratetype)
         #print value
-        for i, value in enumerate(value_items):
+        for j, value in enumerate(value_items):
             if rowtype == '1': #green
-                if key in green[i][ratetype]:
+                if key in green[j][ratetype]:
                     idxs = findIdx(value)
                     for idx in idxs:
-                        green[i][ratetype][key][idx] += 1
+                        green[j][ratetype][key][idx] += 1
                 else:
                     row = [0 for i in range(rowcnt)]
-                    green[i][ratetype][key] = row
+                    green[j][ratetype][key] = row
                     idxs = findIdx(value)
                     for idx in idxs:
-                        green[i][ratetype][key][idx] += 1
+                        green[j][ratetype][key][idx] += 1
             elif rowtype == '2': #yellow
-                if key in yellow[i][ratetype]:
+                if key in yellow[j][ratetype]:
                     idxs = findIdx(value)
                     for idx in idxs:
-                        yellow[i][ratetype][key][idx] += 1
+                        yellow[j][ratetype][key][idx] += 1
                 else:
                     row = [0 for i in range(rowcnt)]
-                    yellow[i][ratetype][key] = row
+                    yellow[j][ratetype][key] = row
                     idxs = findIdx(value)
                     for idx in idxs:
-                        yellow[i][ratetype][key][idx] += 1
+                        yellow[j][ratetype][key][idx] += 1
     except:
         traceback.print_exc()
 
@@ -78,4 +78,4 @@ for j,t in enumerate(yellow):
             print "%s,2,%d,%d\t%s" %(tkey, i, j, ",".join(map(str, yellow[j][i][tkey])))
         
 #output
-#district, pick_up/dropoff, cartype, ratetype, times, date
+#year,month,day,cartype,ratetype,pickup(0)/dropoff(1), sum value vectors

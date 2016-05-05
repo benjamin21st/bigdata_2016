@@ -3,8 +3,8 @@
 import sys
 import traceback
 
-yellow = [[dict() for i in range(7)] for i in range(2)]
-green = [[dict() for i in range(7)] for i in range(2)]
+yellow = [[dict() for i in range(7)] for i in range(3)]
+green = [[dict() for i in range(7)] for i in range(3)]
 
 rowcnt = 129
 

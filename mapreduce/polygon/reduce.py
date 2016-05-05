@@ -3,8 +3,8 @@
 import sys
 import traceback
 
-yellow = [[dict() for i in range(7)] for i in range(3)]
-green = [[dict() for i in range(7)] for i in range(3)]
+yellow = [[dict() for i in range(8)] for i in range(3)]
+green = [[dict() for i in range(8)] for i in range(3)]
 
 rowcnt = 129
 
@@ -54,6 +54,8 @@ for line in sys.stdin:
                     for idx in idxs:
                         green[j][ratetype][key][idx] += 1
             elif rowtype == '2': #yellow
+                if ratetype == 99:
+                    ratetype = 7
                 if key in yellow[j][ratetype]:
                     idxs = findIdx(value)
                     for idx in idxs:
@@ -65,7 +67,7 @@ for line in sys.stdin:
                     for idx in idxs:
                         yellow[j][ratetype][key][idx] += 1
     except:
-        print ratetype
+        print line
         traceback.print_exc()
 
 for j,t in enumerate(green):

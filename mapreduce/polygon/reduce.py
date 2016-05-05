@@ -54,7 +54,6 @@ for line in sys.stdin:
                     for idx in idxs:
                         green[j][ratetype][key][idx] += 1
             elif rowtype == '2': #yellow
-                print ratetype
                 if key in yellow[j][ratetype]:
                     idxs = findIdx(value)
                     for idx in idxs:
@@ -66,6 +65,7 @@ for line in sys.stdin:
                     for idx in idxs:
                         yellow[j][ratetype][key][idx] += 1
     except:
+        print ratetype
         traceback.print_exc()
 
 for j,t in enumerate(green):

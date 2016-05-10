@@ -7,3 +7,9 @@ migrations
 *.csv
 
 data/*_poly.txt
+env
+*.pyc
+*~
+env
+*.pyc
+*~

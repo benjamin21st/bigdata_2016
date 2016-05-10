@@ -73,12 +73,13 @@ class Trip(BaseAttr, Base):
 class TripStats(BaseAttr, Base):
     __tablename__ = 'tripsStats'
     
-    id = Column(Integer(), primary_key = True)
+    id = Column(Integer(), primary_key=True)
     datetime = Column(DateTime(), nullable=False, default=datetime.datetime.now)
     taxi_type = Column(Integer(6))
     rate_code = Column(Integer(6))
+
     total_cnt_vendorID_1 = Column(Integer(10))
-    total_cnt_vendorID_1 = Column(Integer(10))
+    total_cnt_vendorID_2 = Column(Integer(10))
     total_trip_time = Column(Decimal(12,5))
     total_pass_cnt = Column(Integer(10))
     total_trip_dst = Column(Decimal(12,5))

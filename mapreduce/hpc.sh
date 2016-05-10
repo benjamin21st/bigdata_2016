@@ -20,6 +20,17 @@ hjs -D mapreduce.job.reduces=2 -files map.py,reduce.py -mapper map.py -reducer r
 hfs -get /user/mw3265/GreenResult
 cd ..
 
+cd polygon
+# preprocess polygon data
+INS="`seq -w 1 12`"
+for f in ${INS}; do
+    echo "time python parse_polygon.py ../../data/green_tripdata_2015-${f}.csv > ../../data/green_2015_${f}_poly.txt"
+done
+for f in ${INS}; do
+    echo "time python parse_polygon.py ../../data/yellow_tripdata_2015-${f}.csv > ../../data/yellow_2015_${f}_poly.txt"
+done
+cd ..
+
 #upload data
 hfs -mkdir yellow_input
 hfs -put ./data/yellow_2015_*.txt /user/mw3265/yellow_input/

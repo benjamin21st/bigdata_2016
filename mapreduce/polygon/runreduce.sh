@@ -10,4 +10,3 @@ python2 reduce.py < ../../data/yellow_2015_09_poly.txt > ../../mapreduceresult/Y
 python2 reduce.py < ../../data/yellow_2015_10_poly.txt > ../../mapreduceresult/YellowPoly/yellow_2015_10.txt
 python2 reduce.py < ../../data/yellow_2015_11_poly.txt > ../../mapreduceresult/YellowPoly/yellow_2015_11.txt
 python2 reduce.py < ../../data/yellow_2015_12_poly.txt > ../../mapreduceresult/YellowPoly/yellow_2015_12.txt
-

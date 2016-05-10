@@ -8,6 +8,7 @@ green = [[dict() for i in range(8)] for i in range(3)]
 
 rowcnt = 129
 
+
 def myfloat(input):
     ret = 0.0
     try:

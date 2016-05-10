@@ -106,3 +106,18 @@ class TripStats(BaseAttr, Base):
     def __init__(self, **kwargs):
         for key, val in kwargs.items():
             setattr(self, key, val)
+
+
+class TripSpatialStats(BaseAttr, Base):
+    __tablename__ = 'tripsSpatialStats'
+
+    id = Column(Integer(), primary_key=True)
+    datetime = Column(DateTime(), nullable=False, default=datetime.datetime.now)
+    taxi_type = Column(Integer(6))
+    rate_code = Column(Integer(6))
+    action = Column(Integer(6)) # 0 pickup, 1 drop off
+    total_record_cnt = Column(String(2048))
+
+    def __init__(self, **kwargs):
+        for key, val in kwargs.items():
+            setattr(self, key, val)

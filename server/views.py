@@ -17,16 +17,21 @@ COLOR_CODE = {
 def index():
     return 'OMG, it worked!'
 
-@app.route('/trips/count')
-def count_trips():
-    return json.dumps({'count': Trip.query.count()})
+# Disable:
+# There aren't really any data in Trip table
+# @app.route('/trips/count')
+# def count_trips():
+#     return json.dumps({'count': Trip.query.count()})
 
 @app.route('/tripstats')
 def get_trip_stats():
     offset = 0
-    if 'offset' in request.args:
-        offset = int(request.args['offset'])
-    trip_stats = TripStats.query.limit(100).all()
+    base_query = TripStats.query
+    if 'limit' in request.args:
+        limit = int(request.args['limit'])
+        trip_stats = base_query.limit(limit).all()
+    else:
+        trip_stats = base_query.all()
     data = []
     for ts in trip_stats:
         data.append(jsonify_trip(ts))
@@ -39,9 +44,8 @@ def get_trip_stats():
 def get_taxi_data_by_type(color):
     taxi_type = COLOR_CODE[color]
 
-    base_query = TripStats.query
     if 'count' in request.args:
-        count = base_query.filter(TripStats.taxi_type == taxi_type).count()
+        count = session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type).first()[0]
         if 'range' in request.args:
             if request.args['range'] == 'day':
                 return return_json({"count": int(count/365), "type": color})
@@ -54,10 +58,10 @@ def get_taxi_data_by_type(color):
         if request.args['interval'] == 'monthly':
             out_data = {}
             for i in range(1, 13):
-                out_data[i] = session.query(TripStats).filter(TripStats.taxi_type == taxi_type, extract('month', TripStats.datetime) == i).count()
+                out_data[i] = session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type, extract('month', TripStats.datetime) == i).first()[0]
             return return_json(out_data)
 
-    trip_stats = base_query.filter(TripStats.taxi_type == taxi_type).all()
+    trip_stats = session.query(TripStats).filter(TripStats.taxi_type == taxi_type).all()
     data = []
     for ts in trip_stats:
         data.append(jsonify_trip(ts))
@@ -74,6 +78,7 @@ def get_taxi_travel_distance(color):
             return return_json({"type": color, "distance": outdata[0]})
 
     return return_json({})
+
 
 @app.route('/tripstats/passengers/<path:color>')
 def get_taxi_passenger_count(color):

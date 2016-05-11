@@ -89,8 +89,8 @@ Note that currently it only supports serving from port 5000, this will be update
 
 ## 5. API access
 Once you have database and python dependencies set up. These are the endpoints you can request for data (Everywhere that has "yellow" can be replaced to "green" ):
- * /trips/count                        # Get count of all trips we have
  * /tripstats                          # Get all trips we have for this year
+  * /tripstats?limit=10                # Get a limit of 10 trips
   * /tripstats/yellow                  # Get all trips for yellow taxi
    * /tripstats/yellow?count           # Get count of trips for yellow taxi
    * /tripstats/yellow?count&range=day # Get count of trips per day

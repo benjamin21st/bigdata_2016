@@ -147,7 +147,7 @@ for line in sys.stdin:
             # VendorID, tiptime ,passenger_count,trip_distance,pickup_longitude,pickup_latitude,RateCodeID,store_and_fwd_flag,dropoff_longitude,dropoff_latitude,payment_type,fare_amount,extra,mta_tax,tip_amount,tolls_amount,improvement_surcharge,total_amount
             #
             if key in yellow[ratetype]:
-                yellow[ratetype][key][int(value[0]) - 1]  = 1 #vendorID
+                yellow[ratetype][key][int(value[0]) - 1]  += 1 #vendorID
 
                 yellow[ratetype][key][2]  += myfloat(value[1]) #triptime
                 yellow[ratetype][key][3]  += myfloat(value[2]) #passenger count
@@ -212,7 +212,7 @@ for line in sys.stdin:
 
                 payoffset = int(value[9])
                 tripoffset = int(0)
-                row[13+payoffset] += 1
+                row[13+payoffset] = 1
                 '''
                 row[14] = myfloat() #payment 1
                 row[15] = myfloat() #payment 2
@@ -221,7 +221,7 @@ for line in sys.stdin:
                 row[18] = myfloat() #payment 5
                 row[19] = myfloat() #payment 6
                 '''
-                row[20+tripoffset] += 1
+                row[20+tripoffset] = 1
                 '''
                 row[20] = myfloat() #trip type 0
                 row[21] = myfloat() #trip type 1

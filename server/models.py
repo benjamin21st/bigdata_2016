@@ -68,11 +68,11 @@ class Trip(BaseAttr, Base):
     def __init__(self, **kwargs):
         for key, val in kwargs.items():
             setattr(self, key, val)
-            
-            
+
+
 class TripStats(BaseAttr, Base):
     __tablename__ = 'tripsStats'
-    
+
     id = Column(Integer(), primary_key = True)
     datetime = Column(DateTime(), nullable=False, default=datetime.datetime.now)
     taxi_type = Column(Integer(6))
@@ -102,7 +102,17 @@ class TripStats(BaseAttr, Base):
     total_trip_type_2 = Column(Integer(10))
     total_tolls_amount = Column(Integer(10))
     total_record_cnt = Column(Integer(10))
-    
+
     def __init__(self, **kwargs):
         for key, val in kwargs.items():
             setattr(self, key, val)
+
+
+# Example:
+# for d in data:
+#     trip_stat = TripStats(datetime=val1, taxi_type=val2, rate_code=val3)
+#     try:
+#         trip_stat.save()
+#     except:
+    #     session.rollback()
+    #     print "There was an exception"

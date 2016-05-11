@@ -1,4 +1,5 @@
 Flask==0.10.1
+Flask-Cors==2.1.2
 Flask-Migrate==1.8.0
 Flask-SQLAlchemy==2.1
 Flask-Script==2.0.5
@@ -14,4 +15,5 @@ pyshp==1.2.3
 python-editor==1.0
 simple-json==1.1
 simplejson==3.8.2
+six==1.10.0
 wsgiref==0.1.2

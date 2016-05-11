@@ -89,13 +89,14 @@ Note that currently it only supports serving from port 5000, this will be update
 
 ## 5. API access
 Once you have database and python dependencies set up. These are the endpoints you can request for data (Everywhere that has "yellow" can be replaced to "green" ):
- * /trips/count
- * /tripstats
-  * /tripstats/yellow
-   * /tripstats/yellow?count
-   * /tripstats/yellow?interval=monthly
-  * /tripstats/dist/yellow?range=year
-  * /tripstats/passengers/yellow?range=year
-   * /tripstats/passengers/yellow?range=month
-   * /tripstats/passengers/yellow?range=day
- * /spatialstats
+ * /trips/count                        # Get count of all trips we have
+ * /tripstats                          # Get all trips we have for this year
+  * /tripstats/yellow                  # Get all trips for yellow taxi
+   * /tripstats/yellow?count           # Get count of trips for yellow taxi
+   * /tripstats/yellow?count&range=day # Get count of trips per day
+   * /tripstats/yellow?interval=monthly # Get monthly distribution of trip count
+  * /tripstats/dist/yellow?range=year   # Get the total distance travelled in this year
+  * /tripstats/passengers/yellow?range=year  # Get passenger count for this whole year
+   * /tripstats/passengers/yellow?range=month # Get passenger count for average month
+   * /tripstats/passengers/yellow?range=day   # Get passenger count for average day
+ * /spatialstats                       # Get spatial data

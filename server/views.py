@@ -41,7 +41,13 @@ def get_taxi_data_by_type(color):
 
     base_query = TripStats.query
     if 'count' in request.args:
-        return return_json({"count": base_query.filter(TripStats.taxi_type == taxi_type).count(), "type": color})
+        count = base_query.filter(TripStats.taxi_type == taxi_type).count()
+        if 'range' in request.args:
+            if request.args['range'] == 'day':
+                return return_json({"count": int(count/365), "type": color})
+            elif request.args['range'] == 'month':
+                return return_json({"count": int(count/12), "type": color})
+        return return_json({"count": count, "type": color})
     if 'interval' in request.args:
         # TODO:
         # By default, we will just return a key-value pair of month and count

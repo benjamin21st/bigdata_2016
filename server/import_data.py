@@ -96,14 +96,25 @@ def load_data(paths, type):
             print "read %s" % name
             try:
                 with open(name, "r") as f: # No need to specify 'r': this is the default.
-                    lines = f.readline()
-                    for line in lines:
+                    for line in f:
+                    # lines = f.readline()
+                    # for line in lines:
                         if type == 1:
-                            #insert_stats_row(line, cnt)
+                            try:
+                                insert_stats_row(line, cnt)
+                            except:
+                                session.rollback()
+                                logger.error("Unable to insert stats row")
+                                pass
                             cnt += 1
                         elif type == 2:
-                            #insert_spatial_row
-                            cnt += 1
+                            try:
+                                insert_spatial_row(line, cnt)
+                                cnt += 1
+                            except:
+                                session.rollback()
+                                logger.error("Unable to insert spatial row")
+                                pass
 
             except IOError as exc:
                 if exc.errno != errno.EISDIR: # Do not fail if a directory is found, just ignore it.

@@ -86,3 +86,16 @@ And open up [localhost:5000](localhost:5000), you should see a basic print out.
 And if you head over to [localhost:5000/trips/count](localhost:5000/trips/count)
 
 Note that currently it only supports serving from port 5000, this will be updated later.
+
+## 5. API access
+Once you have database and python dependencies set up. These are the endpoints you can request for data (Everywhere that has "yellow" can be replaced to "green" ):
+ * /trips/count
+ * /tripstats
+  * /tripstats/yellow
+   * /tripstats/yellow?count
+   * /tripstats/yellow?interval=monthly
+  * /tripstats/dist/yellow?range=year
+  * /tripstats/passengers/yellow?range=year
+   * /tripstats/passengers/yellow?range=month
+   * /tripstats/passengers/yellow?range=day
+ * /spatialstats

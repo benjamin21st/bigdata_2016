@@ -131,3 +131,22 @@ class TripSpatialStats(BaseAttr, Base):
     def __init__(self, **kwargs):
         for key, val in kwargs.items():
             setattr(self, key, val)
+
+
+#class Polygons(BaseAttr, Base):
+
+
+class TripPolygonStats(BaseAttr, Base):
+    __tablename__ = 'tripsPolygonStats'
+
+    id = Column(Integer(), primary_key=True)
+    datetime = Column(DateTime(), nullable=False, default=datetime.datetime.now)
+    taxi_type = Column(Integer(6))
+    rate_code = Column(Integer(6))
+    action = Column(Integer(6)) # 0 pickup, 1 drop off
+    PolygonId = Column(Integer(6))
+    Count = Column(Integer(10))
+
+    def __init__(self, **kwargs):
+        for key, val in kwargs.items():
+            setattr(self, key, val)

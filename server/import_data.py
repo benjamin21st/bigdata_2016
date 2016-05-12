@@ -88,6 +88,27 @@ def insert_spatial_row(line, id):
         print "Oops, something went terribly wrong"
 
 
+def insert_polyon_row(line, id):
+    (keys, values) = line.strip().split('\t', 1)
+    (year, month, day, taxi_type, rate_type, action) = map(int, keys.split(','))
+    dt = datetime.date(year, month, day)
+    value_items = values.split(',')
+
+    for i in len(values):
+        iid = id+i
+        tss = TripPolygonStats(id=iid, datetime=dt, taxi_type=taxi_type,
+                           rate_type=rate_type, action = action,
+                               PolygonId=i, Count=int(value_items))
+        try:
+            tss.save()
+        except:
+            # Roll back database transaction in case it blocks future operations
+            session.rollback()
+            print "Oops, something went terribly wrong"
+
+    return id+len(values)
+
+
 def load_data(paths, type):
     cnt = 0
     for path in paths:
@@ -105,16 +126,24 @@ def load_data(paths, type):
                             except:
                                 session.rollback()
                                 logger.error("Unable to insert stats row")
-                                pass
+                                continue
                             cnt += 1
                         elif type == 2:
                             try:
                                 insert_spatial_row(line, cnt)
-                                cnt += 1
                             except:
                                 session.rollback()
                                 logger.error("Unable to insert spatial row")
-                                pass
+                                continue
+                            cnt += 1
+                        elif type == 3:
+                            try:
+                                c = insert_polyon_row(line, cnt)
+                            except:
+                                session.rollback()
+                                logger.error("Unable to insert polygon row")
+                                continue
+                            cnt += c
 
             except IOError as exc:
                 if exc.errno != errno.EISDIR: # Do not fail if a directory is found, just ignore it.
@@ -133,6 +162,7 @@ def test_path():
     poly_path_list = ["../mapreduceresult/YellowPolygonResult/*", "../mapreduceresult/GreenPolygonResult/*"]
     load_data(stat_path_list, 1)
     load_data(poly_path_list, 2)
+    load_data(poly_path_list, 3)
 
 
 if __name__ == "__main__":

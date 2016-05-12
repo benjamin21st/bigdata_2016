@@ -77,12 +77,12 @@ for line in sys.stdin:
 for j,t in enumerate(green):
     for i in range(1, 7):
         for tkey in green[j][i].iterkeys():
-            print "%s,1,%d,%d\t%s" %(tkey, i, j, ",".join(map(str, green[j][i][tkey])))
+            print ("%s,1,%d,%d\t%s" %(tkey, i, j, ",".join(map(str, green[j][i][tkey]))))
 
 for j,t in enumerate(yellow):
     for i in range(1, 7):
         for tkey in yellow[j][i].iterkeys():
-            print "%s,2,%d,%d\t%s" %(tkey, i, j, ",".join(map(str, yellow[j][i][tkey])))
+            print ("%s,2,%d,%d\t%s" %(tkey, i, j, ",".join(map(str, yellow[j][i][tkey]))))
         
 #output
 #year,month,day,cartype,ratetype,pickup(0)/dropoff(1), sum value vectors

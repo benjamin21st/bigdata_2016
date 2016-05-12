@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+mkdir ../../mapreduceresult
+mkdir ../../mapreduceresult/YellowPoly
 python2 reduce.py < ../../data/yellow_2015_01_poly.txt > ../../mapreduceresult/YellowPoly/yellow_2015_01.txt
 python2 reduce.py < ../../data/yellow_2015_02_poly.txt > ../../mapreduceresult/YellowPoly/yellow_2015_02.txt
 python2 reduce.py < ../../data/yellow_2015_03_poly.txt > ../../mapreduceresult/YellowPoly/yellow_2015_03.txt

@@ -66,6 +66,7 @@ def insert_stats_row(line, id):
     try:
         ts.save()
     except:
+        print line
         # Roll back database transaction in case it blocks future operations
         session.rollback()
         print "Oops, something went terribly wrong"
@@ -81,6 +82,7 @@ def insert_spatial_row(line, id):
                            total_record_cnt=values)
 
     try:
+        print line
         tss.save()
     except:
         # Roll back database transaction in case it blocks future operations
@@ -93,24 +95,26 @@ def insert_polyon_row(line, id):
     (year, month, day, taxi_type, rate_type, action) = map(int, keys.split(','))
     dt = datetime.date(year, month, day)
     value_items = values.split(',')
+    #print len(value_items)
 
-    for i in len(values):
+    for i in range(0, len(value_items)):
         iid = id+i
         tss = TripPolygonStats(id=iid, datetime=dt, taxi_type=taxi_type,
-                           rate_type=rate_type, action = action,
-                               PolygonId=i, Count=int(value_items))
+                           rate_type=rate_type, action=action,
+                               PolygonId=i, Count=int(value_items[i]))
         try:
             tss.save()
         except:
             # Roll back database transaction in case it blocks future operations
+            print line
             session.rollback()
             print "Oops, something went terribly wrong"
 
-    return id+len(values)
+    return len(value_items)
 
 
 def load_data(paths, type):
-    cnt = 0
+    cnt = 1
     for path in paths:
         files = glob.glob(path)
         for name in files:
@@ -160,8 +164,8 @@ def test_row():
 def test_path():
     stat_path_list = ["../mapreduceresult/GreenResult/*", "../mapreduceresult/YellowResult/*"]
     poly_path_list = ["../mapreduceresult/YellowPolygonResult/*", "../mapreduceresult/GreenPolygonResult/*"]
-    load_data(stat_path_list, 1)
-    load_data(poly_path_list, 2)
+    #load_data(stat_path_list, 1)
+    #load_data(poly_path_list, 2)
     load_data(poly_path_list, 3)
 
 

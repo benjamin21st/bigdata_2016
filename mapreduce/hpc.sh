@@ -1,3 +1,9 @@
+#!/usr/bin/env bash
+alias hfs='/usr/bin/hadoop fs '
+export HAS=/opt/cloudera/parcels/CDH­5.4.5­1.cdh5.4.5.p0.7/jars export HSJ=hadoop­streaming­2.6.0­cdh5.4.5.jar
+alias hjs='/usr/bin/hadoop jar $HAS/$HSJ'
+
+
 #upload data
 hfs -mkdir yellow_input
 hfs -put ./data/yellow_tripdata_2015-*.csv /user/mw3265/yellow_input/
@@ -24,10 +30,10 @@ cd polygon
 # preprocess polygon data
 INS="`seq -w 1 12`"
 for f in ${INS}; do
-    echo "time python parse_polygon.py ../../data/green_tripdata_2015-${f}.csv > ../../data/green_2015_${f}_poly.txt"
+    time python parse_polygon.py ../../data/green_tripdata_2015-${f}.csv > ../../data/green_2015_${f}_poly.txt
 done
 for f in ${INS}; do
-    echo "time python parse_polygon.py ../../data/yellow_tripdata_2015-${f}.csv > ../../data/yellow_2015_${f}_poly.txt"
+    time python parse_polygon.py ../../data/yellow_tripdata_2015-${f}.csv > ../../data/yellow_2015_${f}_poly.txt
 done
 cd ..
 

@@ -44,7 +44,7 @@ class AllTrip:
     def assign(self, poly_list):
         self.polylist = poly_list
 
-    def get_data(self, date_begin, date_end, rate_code=-1, taxi_type=-1, action=-1):
+    def get_sum_data(self, date_begin, date_end, rate_code=-1, taxi_type=-1, action=-1):
         result = [0 for x in range(129)]
         for poly in self.polylist:
             score = 0
@@ -61,6 +61,27 @@ class AllTrip:
                 result = [x+y for x, y in zip(result, poly.records)]
 
         return result
+
+    def get_max_data(self, poly_id, date_begin, date_end, rate_code=-1, taxi_type=-1, action=-1):
+        result = 0
+        pos = -1
+        for idx, poly in enumerate(self.polylist):
+            score = 0
+            if date_begin <= poly.datetime <= date_end:
+                score += 1
+            if rate_code == -1 or rate_code == poly.rate_code:
+                score += 1
+            if taxi_type == -1 or taxi_type == poly.taxi_type:
+                score += 1
+            if action == -1 or action == poly.action:
+                score += 1
+
+            # TODO
+            if score == 4:
+                result = max(poly.records[poly_id], result)
+                pos = idx
+
+        return result, pos
 
 
 def insert_spatial_row(line):
@@ -130,7 +151,7 @@ def test_path():
     poly_path_list = ["../mapreduceresult/YellowPolygonResult/*", "../mapreduceresult/GreenPolygonResult/*"]
     cnt_list = load_data(poly_path_list, 1)
     at.assign(cnt_list)
-    data_all = at.get_data(datetime.date(2015,1,1), datetime.date(2015,12,31))
+    data_all = at.get_sum_data(datetime.date(2015,1,1), datetime.date(2015,12,31), action=1)
     #load_data(poly_path_list, 3)
 
     tripdict = {}

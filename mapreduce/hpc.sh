@@ -62,12 +62,24 @@ cd ..
 
 cd polygon
 hfs -rm -r /user/mw3265/YellowNghTripStats
-hjs -D mapreduce.job.reduces=1 -files map2.py,reduce2.py -mapper map2.py -reducer reduce2.py -input /user/mw3265/yellow_input/yellow_2015_01_poly.txt -input /user/mw3265/yellow_input/yellow_2015_02_poly.txt -input /user/mw3265/yellow_input/yellow_2015_03_poly.txt -input /user/mw3265/yellow_input/yellow_2015_04_poly.txt -input /user/mw3265/yellow_input/yellow_2015_05_poly.txt -input /user/mw3265/yellow_input/yellow_2015_06_poly.txt -input /user/mw3265/yellow_input/yellow_2015_07_poly.txt -input /user/mw3265/yellow_input/yellow_2015_08_poly.txt -input /user/mw3265/yellow_input/yellow_2015_09_poly.txt -input /user/mw3265/yellow_input/yellow_2015_10_poly.txt -input /user/mw3265/yellow_input/yellow_2015_11_poly.txt -input /user/mw3265/yellow_input/yellow_2015_12_poly.txt -output /user/mw3265/YellowNghTripStats
-hfs -get /user/mw3265/YellowNghTripStats
+hjs -D mapreduce.job.reduces=4 -files map2.py,reduce2.py -mapper map2.py -reducer reduce2.py -input /user/mw3265/yellow_input/yellow_2015_01_poly.txt -input /user/mw3265/yellow_input/yellow_2015_02_poly.txt -input /user/mw3265/yellow_input/yellow_2015_03_poly.txt -input /user/mw3265/yellow_input/yellow_2015_04_poly.txt -input /user/mw3265/yellow_input/yellow_2015_05_poly.txt -input /user/mw3265/yellow_input/yellow_2015_06_poly.txt -input /user/mw3265/yellow_input/yellow_2015_07_poly.txt -input /user/mw3265/yellow_input/yellow_2015_08_poly.txt -input /user/mw3265/yellow_input/yellow_2015_09_poly.txt -input /user/mw3265/yellow_input/yellow_2015_10_poly.txt -input /user/mw3265/yellow_input/yellow_2015_11_poly.txt -input /user/mw3265/yellow_input/yellow_2015_12_poly.txt -output /user/mw3265/YellowNghTripStats
+#hfs -get /user/mw3265/YellowNghTripStats
 cd ..
 
 cd polygon
 hfs -rm -r /user/mw3265/GreenNghTripStats
-hjs -D mapreduce.job.reduces=1 -files map2.py,reduce2.py -mapper map2.py -reducer reduce2.py -input /user/mw3265/green_input/green_2015_01_poly.txt -input /user/mw3265/green_input/green_2015_02_poly.txt -input /user/mw3265/green_input/green_2015_03_poly.txt -input /user/mw3265/green_input/green_2015_04_poly.txt -input /user/mw3265/green_input/green_2015_05_poly.txt -input /user/mw3265/green_input/green_2015_06_poly.txt -input /user/mw3265/green_input/green_2015_07_poly.txt -input /user/mw3265/green_input/green_2015_08_poly.txt -input /user/mw3265/green_input/green_2015_09_poly.txt -input /user/mw3265/green_input/green_2015_10_poly.txt -input /user/mw3265/green_input/green_2015_11_poly.txt -input /user/mw3265/green_input/green_2015_12_poly.txt -output /user/mw3265/GreenNghTripStats
-hfs -get /user/mw3265/GreenNghTripStats
+hjs -D mapreduce.job.reduces=4 -files map2.py,reduce2.py -mapper map2.py -reducer reduce2.py -input /user/mw3265/green_input/green_2015_01_poly.txt -input /user/mw3265/green_input/green_2015_02_poly.txt -input /user/mw3265/green_input/green_2015_03_poly.txt -input /user/mw3265/green_input/green_2015_04_poly.txt -input /user/mw3265/green_input/green_2015_05_poly.txt -input /user/mw3265/green_input/green_2015_06_poly.txt -input /user/mw3265/green_input/green_2015_07_poly.txt -input /user/mw3265/green_input/green_2015_08_poly.txt -input /user/mw3265/green_input/green_2015_09_poly.txt -input /user/mw3265/green_input/green_2015_10_poly.txt -input /user/mw3265/green_input/green_2015_11_poly.txt -input /user/mw3265/green_input/green_2015_12_poly.txt -output /user/mw3265/GreenNghTripStats
+#hfs -get /user/mw3265/GreenNghTripStats
+cd ..
+
+cd polygon
+hfs -rm -r /user/mw3265/YellowNghTripStatsMerge
+hjs -D mapreduce.job.reduces=1 -files map2.py,reduce3.py -mapper map2.py -reducer reduce3.py -input /user/mw3265/YellowNghTripStats -output /user/mw3265/YellowNghTripStatsMerge
+hfs -get /user/mw3265/YellowNghTripStatsMerge
+cd ..
+
+cd polygon
+hfs -rm -r /user/mw3265/GreenNghTripStatsMerge
+hjs -D mapreduce.job.reduces=1 -files map2.py,reduce3.py -mapper map2.py -reducer reduce3.py -input /user/mw3265/GreenNghTripStats -output /user/mw3265/GreenNghTripStatsMerge
+hfs -get /user/mw3265/GreenNghTripStatsMerge
 cd ..

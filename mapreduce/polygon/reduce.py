@@ -71,6 +71,7 @@ for line in sys.stdin:
                     for idx in idxs:
                         yellow[j][ratetype][key][idx] += 1
     except:
+        pass
         #traceback.print_exc()
 
 for j,t in enumerate(green):

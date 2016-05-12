@@ -60,6 +60,7 @@ for line in sys.stdin:
             else:
                 trip_stats[rk] = 1
     except:
+        pass
         #traceback.print_exc()
 
 for tkey in trip_stats.iterkeys():

@@ -35,7 +35,6 @@ def findIdx(value):
 for line in sys.stdin:
     try:
         #2015,1,15	2,1,58_90_125,33_58
-        
         (key, value_items) = line.strip().split('\t', 1)
         (rowtype, value_items2) = value_items.split(',', 1)
         (ratetype, values) = value_items2.split(',', 1)
@@ -72,7 +71,7 @@ for line in sys.stdin:
                     for idx in idxs:
                         yellow[j][ratetype][key][idx] += 1
     except:
-        traceback.print_exc()
+        #traceback.print_exc()
 
 for j,t in enumerate(green):
     for i in range(1, 7):

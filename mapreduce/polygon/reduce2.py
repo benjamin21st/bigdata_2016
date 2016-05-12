@@ -45,7 +45,6 @@ def findAllIdx(value_items):
 for line in sys.stdin:
     try:
         #2015,1,15	2,1,58_90_125,33_58
-
         (key, value_items) = line.strip().split('\t', 1)
         (rowtype, value_items2) = value_items.split(',', 1)
         (ratetype, values) = value_items2.split(',', 1)
@@ -61,8 +60,7 @@ for line in sys.stdin:
             else:
                 trip_stats[rk] = 1
     except:
-        print line
-        traceback.print_exc()
+        #traceback.print_exc()
 
 for tkey in trip_stats.iterkeys():
     print "%s\t%d" % (tkey, trip_stats[tkey])

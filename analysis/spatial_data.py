@@ -2,7 +2,10 @@ from datetime import date
 import sys
 import glob
 import errno
+import operator
 import datetime
+sys.path.append('../server/')
+from city_polygons import *
 
 
 class TripSpatialStats():
@@ -121,18 +124,24 @@ def test_row():
 
 
 def test_path():
+    polygons = load_nyc_polygons(nycmap_path)
+
     at = AllTrip()
     poly_path_list = ["../mapreduceresult/YellowPolygonResult/*", "../mapreduceresult/GreenPolygonResult/*"]
-    list = load_data(poly_path_list, 1)
-    at.assign(list)
-    data_201511 = at.get_data(datetime.date(2015,1,1), datetime.date(2015,1,1))
+    cnt_list = load_data(poly_path_list, 1)
+    at.assign(cnt_list)
+    data_all = at.get_data(datetime.date(2015,1,1), datetime.date(2015,12,31))
     #load_data(poly_path_list, 3)
 
-    result = [0 for x in range(129)]
-    for poly in at.polylist:
-        if poly.datetime==datetime.date(2015,1,1):
-            result = [x+y for x, y in zip(result, poly.records)]
-    print result==data_201511
+    tripdict = {}
+    for id, trip_num in enumerate(data_all):
+        tripdict[polygons[id]['name'][3]+", "+polygons[id]['name'][2]] = trip_num
+
+    sorted_list = sorted(tripdict.items(), key=operator.itemgetter(1), reverse=True)
+    for record in sorted_list:
+        print record
+
+
 
 if __name__ == "__main__":
     #print test_row()

@@ -13,3 +13,9 @@ env
 env
 *.pyc
 *~
+.idea/*
+mapreduce/polygon/tmp*.txt
+
+mapreduce/preprocess/greenmap7.txt
+
+mapreduce/preprocess/greentmp_7.txt

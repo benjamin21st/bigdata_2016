@@ -164,9 +164,9 @@ def test_row():
 def test_path():
     stat_path_list = ["../mapreduceresult/GreenResult/*", "../mapreduceresult/YellowResult/*"]
     poly_path_list = ["../mapreduceresult/YellowPolygonResult/*", "../mapreduceresult/GreenPolygonResult/*"]
-    #load_data(stat_path_list, 1)
-    #load_data(poly_path_list, 2)
-    load_data(poly_path_list, 3)
+    load_data(stat_path_list, 1)
+    load_data(poly_path_list, 2)
+    #load_data(poly_path_list, 3)
 
 
 if __name__ == "__main__":

@@ -2,8 +2,9 @@
 # import json
 import simplejson as json
 import sys
+import os
 from app import app
-from flask import request
+from flask import request, send_from_directory
 from sqlalchemy import extract
 from sqlalchemy.sql import func
 from models import *
@@ -15,7 +16,9 @@ COLOR_CODE = {
 
 @app.route('/')
 def index():
-    return 'OMG, it worked!'
+    curdir = os.getcwd()
+
+    return send_from_directory(curdir, 'index.html')
 
 # Disable:
 # There aren't really any data in Trip table
@@ -52,6 +55,25 @@ def get_taxi_data_by_type(color):
 
 @app.route('/tripstats/count/<path:color>')
 def get_taxi_data_count(color):
+    if color == 'all':
+        base_query = session.query(func.sum(TripStats.total_record_cnt))
+        yellow_count = base_query.filter(TripStats.taxi_type == 2).first()[0]
+        green_count = base_query.filter(TripStats.taxi_type == 1).first()[0]
+
+        return return_json({
+            "yellow": {
+                "day": int(yellow_count/365),
+                "week": int(yellow_count/52),
+                "month": int(yellow_count/12),
+                "year": int(yellow_count)
+            },
+            "green": {
+                "day": int(green_count/365),
+                "week": int(green_count/52),
+                "month": int(green_count/12),
+                "year": int(green_count)
+            }
+        })
     taxi_type = COLOR_CODE[color]
     count = session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type).first()[0]
     if 'average' in request.args:
@@ -66,15 +88,32 @@ def get_taxi_data_count(color):
 
 @app.route('/tripstats/distribution/<path:color>')
 def get_taxi_data_distribution(color):
-    taxi_type = COLOR_CODE[color]
+    if color != 'all':
+        taxi_type = COLOR_CODE[color]
+
     # TODO:
     # By default, we will just return a key-value pair of month and count
     out_data = {}
     if 'interval' in request.args:
         if request.args['interval'] == 'month':
             # distribution by month
+            # NOTE: Using a different mechanism now!!!!!!
+            out_data = []
             for i in range(1, 13):
-                out_data[i] = session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type, extract('month', TripStats.datetime) == i).first()[0]
+                # out_data.append({
+                #     "date": i,
+                #     "count": session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type, extract('month', TripStats.datetime) == i).first()[0]
+                # })
+                out_data.append({
+                    "date": i,
+                    "type": 2,
+                    "count": session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == 2, extract('month', TripStats.datetime) == i).first()[0]
+                })
+                out_data.append({
+                    "date": i,
+                    "type": 1,
+                    "count": session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == 1, extract('month', TripStats.datetime) == i).first()[0]
+                })
         elif request.args['interval'] == 'week':
             # distribution by weekday
             alltrips = TripStats.query.filter(TripStats.taxi_type == taxi_type).all()
@@ -90,7 +129,8 @@ def get_taxi_data_distribution(color):
 # example: http://localhost:5011/tripstats/dist/yellow?range=year
 @app.route('/tripstats/dist/<path:color>')
 def get_taxi_travel_distance(color):
-    taxi_type = COLOR_CODE[color]
+    if color != 'all':
+        taxi_type = COLOR_CODE[color]
 
     if 'range' in request.args:
         total_distance = session.query(func.sum(TripStats.total_trip_dst)).filter(TripStats.taxi_type == taxi_type).first()[0]
@@ -104,12 +144,34 @@ def get_taxi_travel_distance(color):
             distance = float("%.2f" % (total_distance/365))
 
         return return_json({"type": color, "distance": distance})
-
-    return return_json({})
+    else:
+        total_yellow = session.query(func.sum(TripStats.total_trip_dst)).filter(TripStats.taxi_type == 2).first()[0]
+        total_green = session.query(func.sum(TripStats.total_trip_dst)).filter(TripStats.taxi_type == 1).first()[0]
+        return return_json({"yellow": total_yellow, "green": total_green})
 
 
 @app.route('/tripstats/passengers/<path:color>')
 def get_taxi_passenger_count(color):
+    if color == 'all':
+        base_query = session.query(func.sum(TripStats.total_pass_cnt))
+        yellow_count = base_query.filter(TripStats.taxi_type == 2).first()[0]
+        green_count = base_query.filter(TripStats.taxi_type == 1).first()[0]
+
+        return return_json({
+            "yellow": {
+                "year": yellow_count,
+                "month": int(yellow_count/12),
+                "week": int(yellow_count/52),
+                "day": int(yellow_count/365)
+            },
+            "green": {
+                "year": green_count,
+                "month": int(green_count/12),
+                "week": int(green_count/52),
+                "day": int(green_count/365)
+            }
+        })
+
     taxi_type = COLOR_CODE[color]
 
     if 'range' in request.args:

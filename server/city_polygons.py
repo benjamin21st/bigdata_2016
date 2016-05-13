@@ -115,15 +115,15 @@ def print_js():
     '''
 
 
-def get_polygons_header(full=False):
+def get_polygons_header():
     data = load_nyc_polygons()
     ret = []
+    ret2 = []
     for d in data:
-        if not full:
-            ret.append(d['name'][3])
-        else:
-            ret.append(d['name'][3]+' ('+d['name'][2]+')')
-    return ret
+        ret.append(d['name'][3])
+        ret2.append(d['name'][2])
+
+    return ret, ret2
 
 
 if __name__ == "__main__":

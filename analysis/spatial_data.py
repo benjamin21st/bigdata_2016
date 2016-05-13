@@ -252,7 +252,11 @@ def build_spatial_data():
     #    print record
 
 
-def build_cm_data():
+def build_cm_data(filterlist=['New York City-Manhattan',
+                              'New York City-Queens',
+                              'New York City-Bronx',
+                              'New York City-Brooklyn',
+                              'New York City-Staten Island']):
     polygons = load_nyc_polygons(nycmap_path)
     tft = TripFromTo()
     poly_path_list = ["../mapreduceresult/YellowNghTripStatsMerge/*", "../mapreduceresult/GreenNghTripStatsMerge/*"]
@@ -261,8 +265,23 @@ def build_cm_data():
 
     rank, rank_dict = tft.get_sum_data()
 
-    for row in rank:
-        print(",".join(map(str, row)))
+    labels, cities = get_polygons_header()
+
+    headers = []
+    for idx, label in enumerate(labels):
+        if cities[idx] in filterlist:
+            headers.append(label)
+
+    print(",".join(map(str, headers)))
+    for idx, row in enumerate(rank):
+        show = []
+        if cities[idx] in filterlist:
+            show.append(labels[idx])
+            for ridx, val in enumerate(row):
+                if cities[ridx] in filterlist:
+                    show.append(val)
+        if len(show) > 0:
+            print(",".join(map(str, show)))
 
     '''
     sorted_list = tft.add_polygon_name(rank_dict, polygons)
@@ -284,4 +303,6 @@ if __name__ == "__main__":
     #print test_row()
 
     #build_spatial_data()
-    build_cm_data()
+
+    #build_cm_data()
+    build_cm_data(['New York City-Manhattan'])

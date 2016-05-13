@@ -16,13 +16,13 @@ sys.path.append('../server/')
 from city_polygons import *
 
 
-page = open("cf_data.csv", "r")
-taxi = pd.read_csv(page)
+page = open("cf_data_manhattan.csv", "r")
+taxi = pd.read_csv(page, index_col=0)
 
 # Normalize data columns
 taxi_norm = taxi
 
-#(taxi - taxi.mean()) / (taxi.max() - taxi.min())
+#taxi_norm = (taxi - taxi.mean()) / (taxi.max() - taxi.min())
 #print taxi.mean()
 #print taxi.max()
 #rint taxi.min()
@@ -31,11 +31,11 @@ taxi_norm = taxi
 
 # Plot it out
 fig, ax = plt.subplots()
-heatmap = ax.pcolor(taxi_norm, cmap=plt.cm.Blues, alpha=0.8)
+heatmap = ax.pcolor(taxi_norm, cmap=plt.cm.Blues)#, alpha=0.8)
 
 # Format
 fig = plt.gcf()
-fig.set_size_inches(128, 128)
+fig.set_size_inches(12, 12)
 
 # turn off the frame
 ax.set_frame_on(False)
@@ -49,12 +49,11 @@ ax.invert_yaxis()
 ax.xaxis.tick_top()
 
 # Set the labels
-labels = get_polygons_header()
-
+labels, labels2 = get_polygons_header()
 # note I could have used nba_sort.columns but made "labels" instead
-ax.set_xticklabels(labels, minor=False)
-#ax.set_yticklabels(taxi_norm.index, minor=False)
-ax.set_yticklabels(labels, minor=False)
+ax.set_xticklabels(taxi_norm.index, minor=False)
+ax.set_yticklabels(taxi_norm.index, minor=False)
+#ax.set_yticklabels(labels, minor=False)
 
 # rotate the
 plt.xticks(rotation=90)
@@ -71,4 +70,4 @@ for t in ax.yaxis.get_major_ticks():
     t.tick1On = False
     t.tick2On = False
 
-fig.savefig("CM.pdf")
+fig.savefig("CM_manhattan3.pdf")

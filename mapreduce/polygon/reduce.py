@@ -85,4 +85,4 @@ for j,t in enumerate(yellow):
             print ("%s,2,%d,%d\t%s" %(tkey, i, j, ",".join(map(str, yellow[j][i][tkey]))))
         
 #output
-#year,month,day,cartype,ratetype,pickup(0)/dropoff(1), sum value vectors
+#year,month,day,cartype(1:green,2:yellow),ratetype,action(0:pickup, 1:dropoff), sum value vectors

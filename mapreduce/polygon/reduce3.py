@@ -24,4 +24,4 @@ for tkey in trip_stats.iterkeys():
     print "%s\t%d" % (tkey, trip_stats[tkey])
 
 #output
-#from_poly_id, to_poly_id , car_type, rate_type, count
+#from_poly_id, to_poly_id , car_type(1:green, 2:yellow), rate_type, count

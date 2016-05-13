@@ -89,14 +89,30 @@ Note that currently it only supports serving from port 5000, this will be update
 
 ## 5. API access
 Once you have database and python dependencies set up. These are the endpoints you can request for data (Everywhere that has "yellow" can be replaced to "green" ):
- * /tripstats                          # Get all trips we have for this year
+ * Raw data
+  */tripstats                          # Get all trips we have for this year
   * /tripstats?limit=10                # Get a limit of 10 trips
   * /tripstats/yellow                  # Get all trips for yellow taxi
-   * /tripstats/yellow?count           # Get count of trips for yellow taxi
-   * /tripstats/yellow?count&range=day # Get count of trips per day
-   * /tripstats/yellow?interval=monthly # Get monthly distribution of trip count
+
+ * Count related
+  * /tripstats/count/yellow            # Get count of trips for yellow taxi
+  * /tripstats/count/yellow?average=day # Get count of trips per day
+
+ * Data distribution
+  * /tripstats/distribution/yellow?interval=month # Get monthly distribution of trip count
+  * /tripstats/distribution/yellow?interval=week # Get distribution by weekdays
+
+ * Distance related
   * /tripstats/dist/yellow?range=year   # Get the total distance travelled in this year
+  * /tripstats/dist/yellow?range=month   # Get the total distance travelled in this year
+  * /tripstats/dist/yellow?range=week   # Get the total distance travelled in this year
+  * /tripstats/dist/yellow?range=day   # Get the total distance travelled in this year
+
+ * Passenger count related
   * /tripstats/passengers/yellow?range=year  # Get passenger count for this whole year
-   * /tripstats/passengers/yellow?range=month # Get passenger count for average month
-   * /tripstats/passengers/yellow?range=day   # Get passenger count for average day
- * /spatialstats                       # Get spatial data
+  * /tripstats/passengers/yellow?range=month # Get passenger count for average month
+  * /tripstats/passengers/yellow?range=week # Get passenger count for average week
+  * /tripstats/passengers/yellow?range=day   # Get passenger count for average day
+
+ * Spatial data
+  * /spatialstats                       # Get spatial data

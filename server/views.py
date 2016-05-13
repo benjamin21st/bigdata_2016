@@ -43,29 +43,49 @@ def get_trip_stats():
 @app.route('/tripstats/<path:color>')
 def get_taxi_data_by_type(color):
     taxi_type = COLOR_CODE[color]
-
-    if 'count' in request.args:
-        count = session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type).first()[0]
-        if 'range' in request.args:
-            if request.args['range'] == 'day':
-                return return_json({"count": int(count/365), "type": color})
-            elif request.args['range'] == 'month':
-                return return_json({"count": int(count/12), "type": color})
-        return return_json({"count": count, "type": color})
-    if 'interval' in request.args:
-        # TODO:
-        # By default, we will just return a key-value pair of month and count
-        if request.args['interval'] == 'monthly':
-            out_data = {}
-            for i in range(1, 13):
-                out_data[i] = session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type, extract('month', TripStats.datetime) == i).first()[0]
-            return return_json(out_data)
-
     trip_stats = session.query(TripStats).filter(TripStats.taxi_type == taxi_type).all()
     data = []
     for ts in trip_stats:
         data.append(jsonify_trip(ts))
     return return_json(data)
+
+
+@app.route('/tripstats/count/<path:color>')
+def get_taxi_data_count(color):
+    taxi_type = COLOR_CODE[color]
+    count = session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type).first()[0]
+    if 'average' in request.args:
+        if request.args['average'] == 'day':
+            return return_json({"count": int(count/365), "type": color})
+        elif request.args['average'] == 'month':
+            return return_json({"count": int(count/12), "type": color})
+        elif request.args['average'] == 'week':
+            return return_json({"count": int(count/52), "type": color})
+    return return_json({"count": count, "type": color})
+
+
+@app.route('/tripstats/distribution/<path:color>')
+def get_taxi_data_distribution(color):
+    taxi_type = COLOR_CODE[color]
+    # TODO:
+    # By default, we will just return a key-value pair of month and count
+    out_data = {}
+    if 'interval' in request.args:
+        if request.args['interval'] == 'month':
+            # distribution by month
+            for i in range(1, 13):
+                out_data[i] = session.query(func.sum(TripStats.total_record_cnt)).filter(TripStats.taxi_type == taxi_type, extract('month', TripStats.datetime) == i).first()[0]
+        elif request.args['interval'] == 'week':
+            # distribution by weekday
+            alltrips = TripStats.query.filter(TripStats.taxi_type == taxi_type).all()
+            for i in range(0, 8):
+                for trip in alltrips:
+                    if i in out_data and trip.datetime.weekday() == i:
+                        out_data[i] += trip.total_record_cnt
+                    elif trip.datetime.weekday() == i:
+                        out_data[i] = trip.total_record_cnt
+    return return_json(out_data)
+
 
 # example: http://localhost:5011/tripstats/dist/yellow?range=year
 @app.route('/tripstats/dist/<path:color>')
@@ -73,9 +93,17 @@ def get_taxi_travel_distance(color):
     taxi_type = COLOR_CODE[color]
 
     if 'range' in request.args:
+        total_distance = session.query(func.sum(TripStats.total_trip_dst)).filter(TripStats.taxi_type == taxi_type).first()[0]
         if request.args['range'] == 'year':
-            outdata = session.query(func.sum(TripStats.total_trip_dst)).filter(TripStats.taxi_type == taxi_type).first()
-            return return_json({"type": color, "distance": outdata[0]})
+            distance = total_distance
+        elif request.args['range'] == 'month':
+            distance = float("%.2f" % (total_distance/12))
+        elif request.args['range'] == 'week':
+            distance = float("%.2f" % (total_distance/52))
+        elif request.args['range'] == 'day':
+            distance = float("%.2f" % (total_distance/365))
+
+        return return_json({"type": color, "distance": distance})
 
     return return_json({})
 
@@ -90,6 +118,8 @@ def get_taxi_passenger_count(color):
             cnt = total_cnt
         elif request.args['range'] == 'month':
             cnt = int(total_cnt / 12)
+        elif request.args['range'] == 'week':
+            cnt = int(total_cnt / 52)
         elif request.args['range'] == 'day':
             cnt = int(total_cnt / 365)
         else:

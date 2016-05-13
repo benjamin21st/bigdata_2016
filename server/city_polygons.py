@@ -7,7 +7,7 @@ nycmap_path = '../data/ZillowNeighborhoods-NY'
 boroughs = ['New York', 'Bronx', 'Queens', 'Kings', 'Richmond']
 
 
-def load_nyc_polygons(path):
+def load_nyc_polygons(path=nycmap_path):
     sf = shapefile.Reader(path)
     records = sf.records()
     shapes = sf.shapes()
@@ -91,6 +91,7 @@ def loadjson():
     with open('nyc.geojson2', 'w') as f:
         f.write(json.dumps(data))
 
+
 def print_js():
     with open('nyc.geojson') as f:
         data = json.load(f)
@@ -112,6 +113,17 @@ def print_js():
     feature['properties'] =  {'prop0': 'value1'}
     data['features'].append(feature)
     '''
+
+
+def get_polygons_header(full=False):
+    data = load_nyc_polygons()
+    ret = []
+    for d in data:
+        if not full:
+            ret.append(d['name'][3])
+        else:
+            ret.append(d['name'][3]+' ('+d['name'][2]+')')
+    return ret
 
 
 if __name__ == "__main__":

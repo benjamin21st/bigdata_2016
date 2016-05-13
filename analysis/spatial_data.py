@@ -158,7 +158,7 @@ class TripFromTo:
                         raise # Propagate other kinds of IOError.
             #print "%d rows" % cnt
 
-    def get_sum_data(self, rate_code=-1, taxi_type=-1, different=False):
+    def get_sum_data(self, rate_code=-1, taxi_type=-1, only_different=False):
         result = [[0 for j in range(129)] for k in range(129)]
         for idx, items in enumerate(self.tripList):
             score = 0
@@ -173,7 +173,7 @@ class TripFromTo:
         rank_dict = dict()
         for idr,row in enumerate(result):
             for idc, col in enumerate(row):
-                if different and idr == idc:
+                if only_different and idr == idc:
                     continue
                 rank_dict[str(idr)+","+str(idc)] = col
 
@@ -231,7 +231,7 @@ def test_row():
     return ret
 
 
-def test_AT():
+def build_spatial_data():
     polygons = load_nyc_polygons(nycmap_path)
     at = AllTrip()
     poly_path_list = ["../mapreduceresult/YellowPolygonResult/*", "../mapreduceresult/GreenPolygonResult/*"]
@@ -252,7 +252,7 @@ def test_AT():
     #    print record
 
 
-def test_Ngh_trip():
+def build_cm_data():
     polygons = load_nyc_polygons(nycmap_path)
     tft = TripFromTo()
     poly_path_list = ["../mapreduceresult/YellowNghTripStatsMerge/*", "../mapreduceresult/GreenNghTripStatsMerge/*"]
@@ -260,13 +260,19 @@ def test_Ngh_trip():
     tft.load_data(poly_path_list)
 
     rank, rank_dict = tft.get_sum_data()
+
+    for row in rank:
+        print(",".join(map(str, row)))
+
+    '''
     sorted_list = tft.add_polygon_name(rank_dict, polygons)
 
     for record in sorted_list:
         print record
+    '''
 
     '''
-    rank, rank_dict = tft.get_sum_data(different=True)
+    rank, rank_dict = tft.get_sum_data(only_different=True)
     sorted_list = tft.add_polygon_name(rank_dict, polygons)
 
     for record in sorted_list:
@@ -276,5 +282,6 @@ def test_Ngh_trip():
 
 if __name__ == "__main__":
     #print test_row()
-    #test_Ngh_trip()
-    test_AT()
+
+    #build_spatial_data()
+    build_cm_data()

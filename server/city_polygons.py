@@ -91,11 +91,33 @@ def loadjson():
     with open('nyc.geojson2', 'w') as f:
         f.write(json.dumps(data))
 
+def print_js():
+    with open('nyc.geojson') as f:
+        data = json.load(f)
+
+    print "{"
+
+    for id, d in enumerate(data['features']):
+        d['id'] = str(id)
+        print '%d:\"%s (%s)\",' % (id,d['properties']['NAME'], d['properties']['CITY'])
+
+    print "}"
+    '''
+    # Add data
+    feature = {}
+    feature['type'] = 'Feature'
+    feature['geometry'] = {'type': 'Point',
+                       'coordinates': [10, 10],
+                       }
+    feature['properties'] =  {'prop0': 'value1'}
+    data['features'].append(feature)
+    '''
 
 
 if __name__ == "__main__":
+    print_js()
     #lists = load_nyc_polygons(nycmap_path)
     #lists = dump_polygon_js(nycmap_path)
     #pprint.pprint(lists)
     #json.dumps(lists, indent=4, sort_keys=True)
-    loadjson()
+    #loadjson()

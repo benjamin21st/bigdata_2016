@@ -38,6 +38,11 @@ var dataSets = {
 		"color": "Purples",
 		"maxDomain": findmax(PickUpData)*0.4
 	},
+	"greenpickup": {
+		"data": greenPickUpData,
+		"color": "Purples",
+		"maxDomain": findmax(greenPickUpData)*0.4
+	},
 };
 
 //set up map

@@ -240,7 +240,7 @@ def build_spatial_data():
 
     base = datetime.date(2015,1,1)
     date_list = [base + datetime.timedelta(days=x) for x in range(0, 366)]
-    data_all = at.get_sum_data(date_list, action=1)
+    data_all = at.get_sum_data(date_list, action=0, taxi_type=1)
     #load_data(poly_path_list, 3)
 
     at.print_jsonfy(data_all)
@@ -302,7 +302,7 @@ def build_cm_data(filterlist=['New York City-Manhattan',
 if __name__ == "__main__":
     #print test_row()
 
-    #build_spatial_data()
+    build_spatial_data()
 
     #build_cm_data()
-    build_cm_data(['New York City-Manhattan'])
+    #build_cm_data(['New York City-Manhattan'])

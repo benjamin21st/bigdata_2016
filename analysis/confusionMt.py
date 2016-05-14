@@ -35,7 +35,7 @@ heatmap = ax.pcolor(taxi_norm, cmap=plt.cm.Blues)#, alpha=0.8)
 
 # Format
 fig = plt.gcf()
-fig.set_size_inches(12, 12)
+fig.set_size_inches(18, 16.5)
 
 # turn off the frame
 ax.set_frame_on(False)
@@ -58,6 +58,7 @@ ax.set_yticklabels(taxi_norm.index, minor=False)
 # rotate the
 plt.xticks(rotation=90)
 
+
 ax.grid(False)
 
 # Turn off all the ticks
@@ -69,5 +70,10 @@ for t in ax.xaxis.get_major_ticks():
 for t in ax.yaxis.get_major_ticks():
     t.tick1On = False
     t.tick2On = False
+
+
+plt.ylabel('Origin Neighborhood')
+plt.xlabel('Destination Neighborhood')
+fig.colorbar(heatmap)
 
 fig.savefig("CM_manhattan3.pdf")

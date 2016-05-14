@@ -93,12 +93,11 @@ def get_taxi_data_distribution(color):
 
     # TODO:
     # By default, we will just return a key-value pair of month and count
-    out_data = {}
+    out_data = []
     if 'interval' in request.args:
         if request.args['interval'] == 'month':
             # distribution by month
             # NOTE: Using a different mechanism now!!!!!!
-            out_data = []
             for i in range(1, 13):
                 # out_data.append({
                 #     "date": i,
@@ -116,13 +115,36 @@ def get_taxi_data_distribution(color):
                 })
         elif request.args['interval'] == 'week':
             # distribution by weekday
-            alltrips = TripStats.query.filter(TripStats.taxi_type == taxi_type).all()
+            yellow_trips = TripStats.query.filter(TripStats.taxi_type == 2).all()
+            green_trips = TripStats.query.filter(TripStats.taxi_type == 1).all()
+            mid_data_yellow = {}
+            mid_data_green = {}
             for i in range(0, 8):
-                for trip in alltrips:
-                    if i in out_data and trip.datetime.weekday() == i:
-                        out_data[i] += trip.total_record_cnt
+                for trip in yellow_trips:
+                    if i in mid_data_yellow and trip.datetime.weekday() == i:
+                        mid_data_yellow[i] += trip.total_record_cnt
                     elif trip.datetime.weekday() == i:
-                        out_data[i] = trip.total_record_cnt
+                        mid_data_yellow[i] = trip.total_record_cnt
+            for i in range(0, 8):
+                for trip in green_trips:
+                    if i in mid_data_green and trip.datetime.weekday() == i:
+                        mid_data_green[i] += trip.total_record_cnt
+                    elif trip.datetime.weekday() == i:
+                        mid_data_green[i] = trip.total_record_cnt
+
+            for key, val in mid_data_yellow.items():
+                out_data.append({
+                    "date": key,
+                    "type": 2,
+                    "count": val
+                })
+            for key, val in mid_data_green.items():
+                out_data.append({
+                    "date": key,
+                    "type": 1,
+                    "count": val
+                })
+
     return return_json(out_data)
 
 

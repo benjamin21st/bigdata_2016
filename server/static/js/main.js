@@ -63,9 +63,10 @@ $.getJSON('/tripstats/passengers/all', function (data) {
  * Load a simple d3 graph to show distribution of trips based
  * on month and weekday
  */
-drawTripGraph();
+drawTripGraph('month');
+drawTripGraph('weekday');
 
-function drawTripGraph () {
+function drawTripGraph (type) {
     var COLOR_CODE = {
         1: "#B7D796",
         2: "#CA9A52"
@@ -80,23 +81,43 @@ function drawTripGraph () {
     var y = d3.scale.linear().range([height, 0]);
 
     // Define the axes
-    var datasetMonth = {
-        1: 'Jan',
-        2: 'Feb',
-        3: 'Mar',
-        4: 'Apr',
-        5: 'May',
-        6: 'Jun',
-        7: 'Jul',
-        8: 'Aug',
-        9: 'Sep',
-        10:'Oct',
-        11:'Nov',
-        12:'Dec'
-    };
+    var dataset, selector, dataUrl;
+
+    if (type === 'month') {
+        dataset = {
+            1: 'Jan',
+            2: 'Feb',
+            3: 'Mar',
+            4: 'Apr',
+            5: 'May',
+            6: 'Jun',
+            7: 'Jul',
+            8: 'Aug',
+            9: 'Sep',
+            10:'Oct',
+            11:'Nov',
+            12:'Dec'
+        };
+        selector = "#trip-distribution-yellow";
+        dataUrl = "/tripstats/distribution/yellow?interval=month";
+    } else if (type === 'weekday') {
+        dataset = {
+            1: 'Mon',
+            2: 'Tue',
+            3: 'Wed',
+            4: 'Thu',
+            5: 'Fri',
+            6: 'Sat',
+            7: 'Sun'
+        };
+        selector = "#trip-distribution-weekday";
+        dataUrl = "/tripstats/distribution/yellow?interval=week";
+    }
+
+
     var xAxis = d3.svg.axis().scale(x)
         .tickFormat(function(d) {
-            return datasetMonth[d]; })
+            return dataset[d]; })
         .orient("bottom").ticks(5);
 
     var yAxis = d3.svg.axis().scale(y)
@@ -109,7 +130,7 @@ function drawTripGraph () {
 
 
     // Adds the svg canvas
-    var svg = d3.select("#trip-distribution-yellow")
+    var svg = d3.select(selector)
         .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -123,7 +144,7 @@ function drawTripGraph () {
     //     .append("span")
     //         .attr("class", "hover-line");
 
-    d3.select("#trip-distribution-yellow")
+    d3.select(selector)
         .on("mousemove", function () {
             $('.hover-line').css({
                 'left': d3.event.offsetX + 10,
@@ -137,7 +158,7 @@ function drawTripGraph () {
         });
 
     // Get the data
-    d3.json("/tripstats/distribution/yellow?interval=month", function(error, data) {
+    d3.json(dataUrl, function(error, data) {
         // data.forEach(function(d) {
         //     d.date = parseDate(d.date);
         // });
@@ -166,7 +187,7 @@ function drawTripGraph () {
 
 
         // Add the tool tip
-        d3.select('#trip-distribution-yellow').append("span")
+        d3.select(selector).append("span")
             .attr("id", "point-tool-tip")
             .attr("class", "point-tool-tip");
 
@@ -181,7 +202,7 @@ function drawTripGraph () {
             })
             .on("mouseenter", function (d) {
                 console.log(d);
-                $('#point-tool-tip').text(d.count).css({
+                $(selector).find('.point-tool-tip').text(d.count).css({
                     "border": "1px solid #000",
                     "left": d3.event.offsetX + 10,
                     "top": d3.event.offsetY,
@@ -191,7 +212,7 @@ function drawTripGraph () {
                 }).fadeIn();
             })
             .on("mouseleave", function () {
-                $('#point-tool-tip').fadeOut();
+                $(selector).find('.point-tool-tip').fadeOut();
             });
 
         // Add the X Axis
